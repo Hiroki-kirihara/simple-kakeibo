@@ -34,6 +34,6 @@ $stmt->bindParam(':date', $date, PDO::PARAM_STR);
 //SQLを実行
 $stmt->execute();
 
-// //
-// header('Location: ./index.php');
-// exit;
+//
+header('Location: ./index.php');
+exit;
