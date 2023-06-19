@@ -1,3 +1,32 @@
+<?php
+
+//DB接続
+include_once('./dbconnect.php');
+
+include_once("./functions.php");
+
+//処理の流れ
+//1.DBへの接続
+//2.recordsテーブルのデータ全件所得
+//3..全データを画面に表示
+
+
+//sql文作成
+$sql = "SELECT * FROM records";
+
+//sql実行準備
+$stmt = $pdo->prepare($sql);
+
+//sql実行
+$stmt->execute();
+
+//全データを変数へ
+$records = $stmt->fetchAll();
+
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -43,49 +72,25 @@
             </thead>
 
             <tbody>
-              <tr>
-                <td class="col-2">2020/1/1</td>
-                <td class="col-3">昼ごはん</td>
-                <td class="col-2"></td>
-                <td class="col-2">800</td>
-                <td class="col-3">
-                  <a href="./editForm.php" class="btn btn-success text-light">編集</a>
-                  <a href="./delete.php" class="btn btn-danger text-light">削除</a>
-                </td>
-              </tr>
 
-              <tr>
-                <td class="col-2">2020/1/1</td>
-                <td class="col-3">お年玉</td>
-                <td class="col-2">20000</td>
-                <td class="col-2"></td>
-                <td class="col-3">
-                  <a href="./editForm.php" class="btn btn-success text-light">編集</a>
-                  <a href="./delete.php" class="btn btn-danger text-light">削除</a>
-                </td>
-              </tr>
+              <?php foreach($records as $record): ?>
+              
+                <tr>
+                  <td class="col-2"><?php echo h($record['date']); ?></td>
+                  <td class="col-3"><?php echo h($record['title']); ?></td>
+                  <td class="col-2"><?php echo h($record['type']) == 0 ? h($record['amount']) : '' ?></td>
+                  <td class="col-2"><?php echo h($record['type']) == 1 ? h($record['amount']) : '' ?></td>
+                  <td class="col-3">
+                    <a href="./editForm.php?id=<?php echo h($record['id']); ?>" class="btn btn-success text-light">編集</a>
+                    <a href="./delete.php?id=<?php echo h($record['id']); ?>" class="btn btn-danger text-light">削除</a>
+                  </td>
+                </tr>
 
-              <tr>
-                <td class="col-2">2020/1/2</td>
-                <td class="col-3">昼ごはん</td>
-                <td class="col-2"></td>
-                <td class="col-2">1000</td>
-                <td class="col-3">
-                  <a href="./editForm.php" class="btn btn-success text-light">編集</a>
-                  <a href="./delete.php" class="btn btn-danger text-light">削除</a>
-                </td>
-              </tr>
+              <?php endforeach; ?>
 
-              <tr>
-                <td class="col-2">2020/1/3</td>
-                <td class="col-3">昼ごはん</td>
-                <td class="col-2"></td>
-                <td class="col-2">1200</td>
-                <td class="col-3">
-                  <a href="./editForm.php" class="btn btn-success text-light">編集</a>
-                  <a href="./delete.php" class="btn btn-danger text-light">削除</a>
-                </td>
-              </tr>
+
+
+
             </tbody>
           </table>
         </div>
